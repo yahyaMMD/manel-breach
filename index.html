@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#020406" />
+  <title>breach://manel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="hud-corners" aria-hidden="true">
+    <i></i><i></i><i></i><i></i>
+  </div>
+
+  <!-- STAGE 0: lock screen -->
+  <section class="stage stage-lock" id="stage-lock">
+    <div class="lock-ring">
+      <svg viewBox="0 0 200 200" class="ring-svg">
+        <circle cx="100" cy="100" r="88" class="ring-track" />
+        <circle cx="100" cy="100" r="88" class="ring-progress" id="ring" />
+      </svg>
+      <div class="lock-core">
+        <span class="lock-icon">⬡</span>
+        <p class="lock-title">SECURE NODE</p>
+        <p class="lock-sub">TARGET · MANEL</p>
+      </div>
+    </div>
+    <button type="button" class="breach-btn" id="breach-btn">
+      <span class="btn-glow"></span>
+      <span class="btn-text">INITIATE BREACH</span>
+    </button>
+    <p class="tap-hint">tap to decrypt · mobile optimized</p>
+  </section>
+
+  <!-- STAGE 1: hacking HUD -->
+  <section class="stage stage-hack" id="stage-hack" hidden>
+    <header class="hack-top">
+      <div class="brand">CYBER<span>OPS</span></div>
+      <div class="live"><i></i> LIVE</div>
+    </header>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="panel-h">INTRUSION // PROGRESS</div>
+        <div class="bar"><div class="bar-fill" id="bar"></div></div>
+        <div class="bar-meta">
+          <span id="pct">0%</span>
+          <span id="phase">SCANNING</span>
+        </div>
+      </div>
+
+      <div class="panel log-panel">
+        <div class="panel-h">SYSLOG</div>
+        <pre id="sys-log"></pre>
+      </div>
+
+      <div class="panel radar-panel">
+        <div class="panel-h">SIGNAL MAP</div>
+        <div class="radar" id="radar">
+          <div class="radar-sweep"></div>
+          <span class="blip" style="--x:30%;--y:40%"></span>
+          <span class="blip" style="--x:62%;--y:28%"></span>
+          <span class="blip" style="--x:48%;--y:68%"></span>
+          <span class="blip" style="--x:75%;--y:55%"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 2: message reveal -->
+  <section class="stage stage-msg" id="stage-msg" hidden>
+    <div class="msg-shell glitch-box" id="msg-shell">
+      <div class="msg-head">
+        <span class="chip">AES-256</span>
+        <span class="chip">DECRYPTED</span>
+        <span class="chip accent">PRIORITY</span>
+      </div>
+
+      <div class="cipher" id="cipher" aria-hidden="true"></div>
+
+      <div class="msg-body">
+        <p class="label">&gt; payload.primary</p>
+        <p class="message" id="message" aria-live="polite"></p>
+        <span class="cursor" id="cursor">▌</span>
+      </div>
+
+      <div class="msg-body secondary" id="secondary-wrap" hidden>
+        <p class="label">&gt; payload.final</p>
+        <p class="message outro" id="outro" aria-live="polite"></p>
+        <span class="cursor" id="cursor2">▌</span>
+      </div>
+
+      <div class="vault" id="vault" hidden>
+        <div class="vault-head">
+          <span class="vault-lock">🔐</span>
+          <div>
+            <p class="vault-title">CLASSIFIED VAULT</p>
+            <p class="vault-hint">one last layer… enter the key</p>
+          </div>
+        </div>
+        <form class="vault-form" id="vault-form" autocomplete="off">
+          <label class="vault-label" for="key-input">ENTER THE KEY</label>
+          <div class="vault-row">
+            <input
+              id="key-input"
+              class="key-input"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="3"
+              placeholder="•••"
+              aria-label="Enter the key"
+            />
+            <button type="submit" class="key-btn" id="key-btn">UNLOCK</button>
+          </div>
+          <p class="vault-status" id="vault-status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="msg-body secret" id="secret-wrap" hidden>
+        <p class="label">&gt; payload.secret</p>
+        <p class="message secret-msg" id="secret-msg" aria-live="polite"></p>
+      </div>
+
+      <div class="msg-foot">
+        <span id="clock">00:00:00</span>
+        <span class="sep">·</span>
+        <span>SESSION · MANEL</span>
+        <span class="sep">·</span>
+        <span id="hash">0x00FF9D</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="flash" id="flash" aria-hidden="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
