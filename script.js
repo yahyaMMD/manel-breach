@@ -3,7 +3,7 @@
     "Hallo Manel, wie geht es dir, deine Gesundheit, deine Stimmung, dein Leben, wie verbringst du deine Tage? Hoffe, alles läuft gut.";
   const OUTRO = "Hoffe, diese Nachricht lässt dich gut fühlen.";
   const SECRET =
-    "hhh i expected that u gona try until find it";
+    "i know u are smart and u gonna find it\nGG";
   // vault key — obfuscated (not shown on screen)
   const VAULT_KEY = atob("Njk4");
 
