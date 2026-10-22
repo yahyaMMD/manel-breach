@@ -123,6 +123,33 @@
         </form>
       </div>
 
+      <div class="vault vault-l2" id="vault2" hidden>
+        <div class="vault-head">
+          <span class="vault-lock">🗝️</span>
+          <div>
+            <p class="vault-title">DEEPER LAYER</p>
+            <p class="vault-hint">nice… but not done yet · enter the 2nd key</p>
+          </div>
+        </div>
+        <form class="vault-form" id="vault-form-2" autocomplete="off">
+          <label class="vault-label" for="key-input-2">ENTER THE KEY</label>
+          <div class="vault-row">
+            <input
+              id="key-input-2"
+              class="key-input"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="4"
+              placeholder="••••"
+              aria-label="Enter the second key"
+            />
+            <button type="submit" class="key-btn" id="key-btn-2">UNLOCK</button>
+          </div>
+          <p class="vault-status" id="vault-status-2" aria-live="polite"></p>
+        </form>
+      </div>
+
       <div class="msg-body secret" id="secret-wrap" hidden>
         <p class="label">&gt; payload.secret</p>
         <p class="message secret-msg" id="secret-msg" aria-live="polite"></p>

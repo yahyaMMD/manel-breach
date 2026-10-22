@@ -550,6 +550,32 @@ body {
   box-shadow: 0 0 28px rgba(255, 45, 149, 0.12);
 }
 
+.vault-l2 {
+  border-color: rgba(255, 176, 32, 0.5);
+  background:
+    linear-gradient(135deg, rgba(255, 176, 32, 0.1), rgba(0, 255, 157, 0.06)),
+    rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 28px rgba(255, 176, 32, 0.14);
+}
+
+.vault-l2 .vault-title { color: var(--amber); }
+.vault-l2 .vault-label { color: var(--cyan); }
+.vault-l2 .key-input {
+  border-color: rgba(255, 176, 32, 0.45);
+  caret-color: var(--amber);
+  letter-spacing: 0.35em;
+}
+.vault-l2 .key-input:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 18px rgba(255, 176, 32, 0.35);
+}
+.vault-l2 .key-btn {
+  border-color: var(--amber);
+  background: rgba(255, 176, 32, 0.18);
+  color: #1a1200;
+  box-shadow: 0 0 16px rgba(255, 176, 32, 0.25);
+}
+
 .vault-head {
   display: flex;
   align-items: center;

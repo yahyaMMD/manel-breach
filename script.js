@@ -4,8 +4,10 @@
   const OUTRO = "Hoffe, diese Nachricht lässt dich gut fühlen.";
   const SECRET =
     "i know u are smart and u gonna find it\nGG";
-  // vault key — obfuscated (not shown on screen)
+  // vault key 1 — obfuscated (not shown on screen)
   const VAULT_KEY = atob("Njk4");
+  // vault key 2 — plain text on purpose
+  const VAULT_KEY_2 = "5234";
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -33,6 +35,11 @@
   const keyInput = document.getElementById("key-input");
   const keyBtn = document.getElementById("key-btn");
   const vaultStatus = document.getElementById("vault-status");
+  const vault2 = document.getElementById("vault2");
+  const vaultForm2 = document.getElementById("vault-form-2");
+  const keyInput2 = document.getElementById("key-input-2");
+  const keyBtn2 = document.getElementById("key-btn-2");
+  const vaultStatus2 = document.getElementById("vault-status-2");
   const secretWrap = document.getElementById("secret-wrap");
   const secretMsg = document.getElementById("secret-msg");
   const canvas = document.getElementById("bg");
@@ -255,7 +262,21 @@
   }
 
   let attempts = 0;
+  let attempts2 = 0;
   let unlocked = false;
+  let unlocked2 = false;
+
+  async function openSecret() {
+    secretWrap.hidden = false;
+    secretWrap.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    await scrambleThenType(secretMsg, SECRET, 28);
+  }
+
+  function showVault2() {
+    vault2.hidden = false;
+    vault2.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    setTimeout(() => keyInput2.focus(), 350);
+  }
 
   vaultForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -292,13 +313,53 @@
     keyInput.classList.add("ok");
     keyInput.disabled = true;
     keyBtn.disabled = true;
-    vaultStatus.textContent = "vault unlocked ✓";
+    vaultStatus.textContent = "layer 1 unlocked ✓ · deeper vault detected…";
     vaultStatus.className = "vault-status ok";
     doFlash();
+    await sleep(450);
+    showVault2();
+  });
+
+  vaultForm2.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (unlocked2) return;
+
+    const guess = keyInput2.value.trim();
+    keyInput2.classList.remove("wrong", "ok");
+
+    if (!/^\d{4}$/.test(guess)) {
+      vaultStatus2.textContent = "need exactly 4 digits…";
+      vaultStatus2.className = "vault-status err";
+      keyInput2.classList.add("wrong");
+      return;
+    }
+
+    attempts2 += 1;
+
+    if (guess !== VAULT_KEY_2) {
+      vaultStatus2.textContent =
+        attempts2 === 1
+          ? "access denied · try again"
+          : attempts2 < 5
+            ? `access denied · attempt ${attempts2}`
+            : `still wrong · attempt ${attempts2} · keep going…`;
+      vaultStatus2.className = "vault-status err";
+      keyInput2.classList.add("wrong");
+      keyInput2.select();
+      msgShell.classList.add("shake");
+      setTimeout(() => msgShell.classList.remove("shake"), 400);
+      return;
+    }
+
+    unlocked2 = true;
+    keyInput2.classList.add("ok");
+    keyInput2.disabled = true;
+    keyBtn2.disabled = true;
+    vaultStatus2.textContent = "all layers unlocked ✓";
+    vaultStatus2.className = "vault-status ok";
+    doFlash();
     await sleep(280);
-    secretWrap.hidden = false;
-    secretWrap.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
-    await scrambleThenType(secretMsg, SECRET, 28);
+    await openSecret();
   });
 
   keyInput.addEventListener("input", () => {
@@ -307,6 +368,15 @@
     if (!unlocked) {
       vaultStatus.textContent = "";
       vaultStatus.className = "vault-status";
+    }
+  });
+
+  keyInput2.addEventListener("input", () => {
+    keyInput2.value = keyInput2.value.replace(/\D/g, "").slice(0, 4);
+    keyInput2.classList.remove("wrong");
+    if (!unlocked2) {
+      vaultStatus2.textContent = "";
+      vaultStatus2.className = "vault-status";
     }
   });
 
